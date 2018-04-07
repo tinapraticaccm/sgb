@@ -5,7 +5,7 @@ VisualStudioVersion = 15.0.27428.2015
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SGB", "SGB\SGB.csproj", "{0C821801-6F47-4895-B04C-C5E3FF84F00A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Model", "Model\Model.csproj", "{778228F4-4EBE-4579-A578-BE1730BAF1E0}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DomainModel", "Model\DomainModel.csproj", "{778228F4-4EBE-4579-A578-BE1730BAF1E0}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataAcccess", "DataAcccess\DataAcccess.csproj", "{8D3236CB-2039-49EB-8E07-5DECBE6959B4}"
 EndProject

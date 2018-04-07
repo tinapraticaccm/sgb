@@ -1,4 +1,5 @@
 ﻿using Model;
+using Model.Entities;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace DataAcccess
 {
-    public abstract class BaseDataAccess<TEntity> where TEntity : class
+    public abstract class BaseDataAccess<TEntity> where TEntity : class, IEntity
     {
         public List<TEntity> ListAll()
         {
@@ -18,7 +19,7 @@ namespace DataAcccess
             }
         }
 
-        public TEntity FindById(int id)
+        public TEntity GetById(int id)
         {
             using(var context = new SGBContext())
             {
@@ -30,16 +31,9 @@ namespace DataAcccess
         {
             using(var context = new SGBContext())
             {
-                var actualEntity = context.Set<TEntity>().Find(entity);
-
-                if (actualEntity != null)
-                {
-                    context.Entry(entity).State = EntityState.Modified;
-                }
-                else
-                {
-                    context.Entry(entity).State = EntityState.Added;
-                }
+                context.Entry(entity).State = entity.Id == 0 ?
+                                   EntityState.Added :
+                                   EntityState.Modified;
                 context.SaveChanges();
                 return entity;
             }
@@ -50,6 +44,7 @@ namespace DataAcccess
             using(var context = new SGBContext())
             {
                 context.Entry(entity).State = EntityState.Deleted;
+                context.SaveChanges();
             }
         }
 

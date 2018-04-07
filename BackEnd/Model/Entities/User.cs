@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace Model.Entities
 {
     [Table("Users")]
-    public class User
+    public class User : IEntity
     {
         public int Id { get; set; }
         public int IdUserType { get; set; }
@@ -23,9 +23,8 @@ namespace Model.Entities
 
         }
 
-        public User(int id, int idUserType, string cpf, string email, string nome, string sobrenome, string contato)
+        public User(int idUserType, string cpf, string email, string nome, string sobrenome, string contato)
         {
-            this.Id = id;
             this.IdUserType = idUserType;
             this.CodCPF = cpf;
             this.Email = email;

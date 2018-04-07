@@ -119,9 +119,9 @@
       <Project>{8d3236cb-2039-49eb-8e07-5decbe6959b4}</Project>
       <Name>DataAcccess</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Model\Model.csproj">
+    <ProjectReference Include="..\Model\DomainModel.csproj">
       <Project>{778228f4-4ebe-4579-a578-be1730baf1e0}</Project>
-      <Name>Model</Name>
+      <Name>DomainModel</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>

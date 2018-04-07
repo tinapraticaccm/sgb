@@ -1,4 +1,5 @@
-﻿using Model.Entities;
+﻿using Model;
+using Model.Entities;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
@@ -8,30 +9,19 @@ using System.Threading.Tasks;
 
 namespace DataAcccess.Repository
 {
-    public class UserDataAccess
+    public class UserDataAccess : BaseDataAccess<User>
     {
 
-        public IEnumerable<User> GetUsers()
+        public IEnumerable<User> ListUsers()
         {
-            
-            using (var context = new SGBContext())
-            {
-                
-                try
-                {
-                    ConfigContext(context);
-                    IEnumerable<User> usuarios;
-                    usuarios = context.User.ToList();
-                    return usuarios;
-                }
-                catch (SqlException)
-                {
-                    IEnumerable<User> usuarios = new List<User>();
-                    return usuarios;
-                }
-            }
+            return ListAll();
         }
-        
+
+        public User AddUser(User newUser)
+        {
+            return Add(newUser);
+        }
+
         private void ConfigContext(SGBContext context)
         {
             context.Configuration.ProxyCreationEnabled = false;
