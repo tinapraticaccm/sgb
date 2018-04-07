@@ -1,0 +1,12 @@
+C:\Projetos\TIP-CCM\SGB\Model\bin\Debug\Model.dll
+C:\Projetos\TIP-CCM\SGB\Model\bin\Debug\Model.pdb
+C:\Projetos\TIP-CCM\SGB\Model\obj\Debug\Model.csprojResolveAssemblyReference.cache
+C:\Projetos\TIP-CCM\SGB\Model\obj\Debug\Model.csproj.CoreCompileInputs.cache
+C:\Projetos\TIP-CCM\SGB\Model\obj\Debug\Model.dll
+C:\Projetos\TIP-CCM\SGB\Model\obj\Debug\Model.pdb
+C:\Projetos\TIP-CCM\SGB\Model\bin\Debug\Model.dll.config
+C:\Projetos\TIP-CCM\SGB\Model\bin\Debug\EntityFramework.dll
+C:\Projetos\TIP-CCM\SGB\Model\bin\Debug\EntityFramework.SqlServer.dll
+C:\Projetos\TIP-CCM\SGB\Model\bin\Debug\EntityFramework.xml
+C:\Projetos\TIP-CCM\SGB\Model\bin\Debug\EntityFramework.SqlServer.xml
+C:\Projetos\TIP-CCM\SGB\Model\obj\Debug\Model.csproj.CopyComplete

@@ -1,0 +1,12 @@
+C:\Projetos\TIP-CCM\SGB\Business\bin\Debug\Business.dll
+C:\Projetos\TIP-CCM\SGB\Business\bin\Debug\Business.pdb
+C:\Projetos\TIP-CCM\SGB\Business\obj\Debug\Business.csprojResolveAssemblyReference.cache
+C:\Projetos\TIP-CCM\SGB\Business\obj\Debug\Business.csproj.CoreCompileInputs.cache
+C:\Projetos\TIP-CCM\SGB\Business\obj\Debug\Business.dll
+C:\Projetos\TIP-CCM\SGB\Business\obj\Debug\Business.pdb
+C:\Projetos\TIP-CCM\SGB\Business\bin\Debug\Business.dll.config
+C:\Projetos\TIP-CCM\SGB\Business\bin\Debug\EntityFramework.dll
+C:\Projetos\TIP-CCM\SGB\Business\bin\Debug\EntityFramework.SqlServer.dll
+C:\Projetos\TIP-CCM\SGB\Business\bin\Debug\EntityFramework.xml
+C:\Projetos\TIP-CCM\SGB\Business\bin\Debug\EntityFramework.SqlServer.xml
+C:\Projetos\TIP-CCM\SGB\Business\obj\Debug\Business.csproj.CopyComplete
