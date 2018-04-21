@@ -50,6 +50,7 @@
     <Compile Include="BaseDataAccess.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repository\EntityRepository.cs" />
+    <Compile Include="Repository\LibraryDataAccess.cs" />
     <Compile Include="Repository\UserDataAccess.cs" />
   </ItemGroup>
   <ItemGroup>
