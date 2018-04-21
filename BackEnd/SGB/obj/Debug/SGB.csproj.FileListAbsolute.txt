@@ -162,3 +162,6 @@ C:\Projetos\tinapratica\SGB\sgb\BackEnd\SGB\obj\Debug\SGB.csproj.CoreCompileInpu
 C:\Projetos\tinapratica\SGB\sgb\BackEnd\SGB\obj\Debug\SGB.csproj.CopyComplete
 C:\Projetos\tinapratica\SGB\sgb\BackEnd\SGB\obj\Debug\SGB.dll
 C:\Projetos\tinapratica\SGB\sgb\BackEnd\SGB\obj\Debug\SGB.pdb
+C:\Projetos\tinapratica\SGB\sgb\BackEnd\SGB\bin\System.Web.Cors.dll
+C:\Projetos\tinapratica\SGB\sgb\BackEnd\SGB\bin\System.Web.Http.Cors.dll
+C:\Projetos\tinapratica\SGB\sgb\BackEnd\SGB\bin\System.Web.Http.Cors.xml
