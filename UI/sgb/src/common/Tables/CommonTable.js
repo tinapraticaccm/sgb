@@ -28,15 +28,34 @@ class CommonTable extends Component {
     }
     
     rowSelectedHander = (rows) => {
-        const isRowSelected = this.props.data.map(() => false);
-        const selectedEntries = rows.map(row => {
-            isRowSelected[row] = true;
-            return this.props.data[row];
-        });
-        this.setState({
-            selectedEntries: selectedEntries,
-            isRowSelected: isRowSelected,
-        });
+        if(rows === 'all') {
+            const selectedEntries = this.props.data;
+            const isRowSelected = this.props.data.map(() => true);
+            this.setState({
+                selectedEntries: selectedEntries,
+                isRowSelected: isRowSelected,
+            });
+
+        }
+        else if(rows === 'none') {
+            const selectedEntries = [];
+            const isRowSelected = this.props.data.map(() => false);
+            this.setState({
+                selectedEntries: selectedEntries,
+                isRowSelected: isRowSelected,
+            });
+        }
+        else{
+            const isRowSelected = this.props.data.map(() => false);
+            const selectedEntries = rows.map(row => {
+                isRowSelected[row] = true;
+                return this.props.data[row];
+            });
+            this.setState({
+                selectedEntries: selectedEntries,
+                isRowSelected: isRowSelected,
+            });
+        }
 
 
     }
@@ -94,7 +113,7 @@ class CommonTable extends Component {
             <div className={classes.Buttons}>
                     {this.props.add ? (
                         <RaisedButton 
-                            label="Adicionar Usuário" 
+                            label={'Adicionar ' + this.props.entryName}
                             primary={true} 
                             onClick={() => this.props.add()} 
                         />
@@ -102,7 +121,7 @@ class CommonTable extends Component {
                     <div style={{width: '5px',height: 'auto', display: 'inline-block' }} ></div>
                     {this.props.deleteMultiple ?(
                         <RaisedButton 
-                            label="Deletar selecionados" 
+                            label={'Apagar ' + this.props.entryNamePlural} 
                             primary={true} 
                             onClick={() => this.props.deleteMultiple(this.state.selectedEntries)} 
                         />
