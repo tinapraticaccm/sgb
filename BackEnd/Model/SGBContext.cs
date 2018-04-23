@@ -16,5 +16,6 @@ namespace Model
         }
         public DbSet<User> User { get; set; }
         public DbSet<Library> Library { get; set; }
+        public DbSet<Publisher> Publisher { get; set; }
     }
 }
