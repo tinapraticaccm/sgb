@@ -214,3 +214,7 @@ project.lock.json
 #####
 # End of core ignore list, below put you custom 'per project' settings (patterns or path)
 #####
+UI/sgb/package-lock.json
+UI/sgb/package.json
+UI/sgb/package.json
+UI/sgb/package-lock.json
