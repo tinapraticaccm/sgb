@@ -47,7 +47,8 @@ class UserModal extends Component {
         modal={false}
         actions={actions}
         open={this.props.open}
-        onRequestClose={this.props.closeModal} >
+        onRequestClose={this.props.closeModal}
+        autoScrollBodyContent={true} >
         <div>
         <TextField 
           id="text-field-default" 

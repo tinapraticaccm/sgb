@@ -11,7 +11,8 @@ namespace SGB
         public static void Register(HttpConfiguration config)
         {
             // Serviços e configuração da API da Web
-
+            var appXmlType = config.Formatters.XmlFormatter.SupportedMediaTypes.FirstOrDefault(t => t.MediaType == "application/xml");
+            config.Formatters.XmlFormatter.SupportedMediaTypes.Remove(appXmlType);
             //Cors
             var cors = new EnableCorsAttribute("*", "*", "*");
             config.EnableCors(cors);

@@ -11,3 +11,12 @@
   text-align: center;
   margin: 20px;
 }
+
+.Pagination {
+  display: block;
+}
+
+.InlineList {
+  display: flex;
+  list-style: none;
+}

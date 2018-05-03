@@ -1,0 +1,10 @@
+.link {
+  text-decoration: none;
+  color: black;
+}
+
+.link:hover {
+  text-decoration: none;
+  font-weight: 700;
+  color: black;
+}

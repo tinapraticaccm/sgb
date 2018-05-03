@@ -4,6 +4,7 @@ import MenuItem from 'material-ui/MenuItem';
 import Drawer from 'material-ui/Drawer';
 import UserOptions from './UserOptions/UserOptions'
 import {Link} from 'react-router-dom';
+import classes from './SideLeftMenu.css'
 
 class SideLeftMenu extends Component {
   constructor(props) {
@@ -29,9 +30,16 @@ class SideLeftMenu extends Component {
           open={this.state.openSideLeftMenu}
           onRequestChange={(open) => this.setState({openSideLeftMenu: open})}
         >
+<<<<<<< HEAD
           <MenuItem onClick={this.closeMenu}><Link to="/usuarios">Usuários</Link></MenuItem>
           <MenuItem onClick={this.closeMenu}><Link to="/bibliotecas">Bibliotecas</Link></MenuItem>
           <MenuItem onClick={this.closeMenu}>Menu Item 2</MenuItem>
+=======
+          <MenuItem onClick={this.closeMenu}>
+            <Link to="/usuarios" className={classes.link}>Usuários</Link>
+          </MenuItem>
+          <MenuItem onClick={this.closeMenu} className={classes.link}>Menu Item 2</MenuItem>
+>>>>>>> develop
         </Drawer>
       </div>
     );

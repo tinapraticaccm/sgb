@@ -47,11 +47,24 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BaseBusiness.cs" />
+    <Compile Include="Entities\UserBusiness.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\DataAcccess\DataAcccess.csproj">
+      <Project>{8d3236cb-2039-49eb-8e07-5decbe6959b4}</Project>
+      <Name>DataAcccess</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Model\DomainModel.csproj">
+      <Project>{778228f4-4ebe-4579-a578-be1730baf1e0}</Project>
+      <Name>DomainModel</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -1,43 +1,54 @@
-import React, {Component} from 'react';
-import {
-  Table,
-  TableBody,
-  TableHeader,
-  TableHeaderColumn,
-  TableRow,
-  TableRowColumn,
-} from 'material-ui/Table';
-import {Card, CardTitle, CardHeader, CardText} from 'material-ui/Card';
+import React, { Component } from 'react';
+import { Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn, TableFooter } from 'material-ui/Table';
+import { Card, CardTitle, CardHeader, CardText } from 'material-ui/Card';
 import http from '../../httpService/httpService'
 import classes from './Users.css'
 import FontIcon from 'material-ui/FontIcon';
 import IconButton from 'material-ui/IconButton';
 import EditButton from 'material-ui/svg-icons/content/create';
+import DeleteButton from 'material-ui/svg-icons/action/delete';
 import UserModal from './UserModal/UserModal'
-import {orange500} from 'material-ui/styles/colors';
+import { orange500, red500, blue500 } from 'material-ui/styles/colors';
 import Divider from 'material-ui/Divider';
 import RaisedButton from 'material-ui/RaisedButton';
+import Dialog from 'material-ui/Dialog';
+import FlatButton from 'material-ui/FlatButton';
+import Pagination from '../../common/Pagination/Pagination'
 
 class Users extends Component {
 
   state = {
     users: null,
     user: null,
-    isModalOpen: false
+    isModalOpen: false,
+    openDeleteConfirmDialog: false,
+    userDelete: null,
+    page: 1,
+    queryLimit: {
+      page: 1,
+      limit: 5,
+      Order: 'Id',
+      Orientation: 'DESC'
+    },
+    totalUsers: 0
   }
 
   componentDidMount () {
+    this.getUsers();
+  }
+
+  getUsers () {
+    http.post('user/getUsers', this.state.queryLimit)
+    .then(response => {
+      this.setState({totalUsers: response.data.Count})
+      this.setState({users: response.data.Result})
+    })
+  }
+  refreshTable () {
     http.get('user')
       .then(response => {
         this.setState({users: response.data})
       })
-  }
-
-  refreshTable () {
-    http.get('user')
-    .then(response => {
-      this.setState({users: response.data})
-    })
   }
 
   openUserModal (user) {
@@ -62,17 +73,55 @@ class Users extends Component {
     this.setState({user: null})
     this.setState({isModalOpen: true})
   }
+
+  openDeleteConfirmDialog (user) {
+    this.setState({userDelete: {...user}})
+    this.setState({openDeleteConfirmDialog: true})
+  }
+
+  closeDeleteConfirmDialog () {
+    this.setState({userDelete: null})
+    this.setState({openDeleteConfirmDialog: false})
+  }
+
+  deleteUser () {
+    http.post('user/delete', this.state.userDelete)
+      .then(response => {
+        this.closeDeleteConfirmDialog()
+        this.refreshTable()
+      })
+      .catch(error => this.closeDeleteConfirmDialog())
+  }
+
+  changePage (newPage) {
+    let queryLimit = {...this.state.queryLimit}
+    queryLimit.page = newPage
+    this.setState({queryLimit: queryLimit}, () => this.getUsers())
+  }
   
   render () {
     
     const modal = this.state.isModalOpen ?
     (
       <UserModal
-      user={{...this.state.user}}
-      open={this.state.isModalOpen} 
-      closeModal={() => this.closeModal()}
-      editUser={(user) => this.editUser(user)} />
+        user={{...this.state.user}}
+        open={this.state.isModalOpen} 
+        closeModal={() => this.closeModal()}
+        editUser={(user) => this.editUser(user)} />
     ) : null
+
+    const dialogActions = [
+      <FlatButton
+        label="Cancelar"
+        primary={true}
+        onClick={() => this.closeDeleteConfirmDialog()}
+      />,
+      <FlatButton
+        label="Confirmar"
+        primary={true}
+        onClick={() => this.deleteUser()}
+      />,
+    ];
 
     let table = null
     if (this.state.users) {
@@ -83,10 +132,13 @@ class Users extends Component {
             <TableRowColumn>{user.Sobrenome}</TableRowColumn>
             <TableRowColumn>{user.CodCPF}</TableRowColumn>
             <TableRowColumn>{user.Contato}</TableRowColumn>
-            <TableRowColumn>{user.IdUserType}</TableRowColumn>
+            <TableRowColumn>{user.UserType.Type}</TableRowColumn>
             <TableRowColumn>
               <IconButton tooltip="SVG Icon" onClick={() => this.openUserModal(user)}>
                 <EditButton color={orange500} />
+              </IconButton>
+              <IconButton tooltip="SVG Icon" onClick={() => this.openDeleteConfirmDialog(user)}>
+                <DeleteButton color={red500} />
               </IconButton>
             </TableRowColumn>
           </TableRow>
@@ -116,9 +168,26 @@ class Users extends Component {
             <TableBody>
               {table}
             </TableBody>
+            <TableFooter>
+              <Pagination 
+                totalResults={this.state.totalUsers} 
+                page={this.state.queryLimit.page}
+                changePage={(page) => this.changePage(page)}
+                minPageShowed="1" />
+            </TableFooter>
           </Table>
         </Card>
+
         {modal}
+
+        <Dialog
+          title="Confirmar exclusão?"
+          actions={dialogActions}
+          modal={false}
+          open={this.state.openDeleteConfirmDialog}
+          onRequestClose={this.handleClose}
+        />
+
       </div>
     )
   }

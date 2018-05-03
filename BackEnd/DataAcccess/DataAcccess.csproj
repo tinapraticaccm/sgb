@@ -52,6 +52,7 @@
     <Compile Include="Repository\EntityRepository.cs" />
     <Compile Include="Repository\LibraryDataAccess.cs" />
     <Compile Include="Repository\UserDataAccess.cs" />
+    <Compile Include="Repository\UserTypeDataAccess.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

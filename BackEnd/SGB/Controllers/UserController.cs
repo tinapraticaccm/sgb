@@ -1,5 +1,7 @@
-﻿using DataAcccess.Repository;
+﻿using Business.Entities;
+using DataAcccess.Repository;
 using Model.Entities;
+using Model.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,44 +13,49 @@ namespace SGB.Controllers
 {
     public class UserController : ApiController
     {
-        User usuario = new User(1, "13237796638", "alan.w.l@hotmail.com", "Alan", "Oliveira", "991611642");
-
-        UserDataAccess userRepository = new UserDataAccess();
+        UserDataAccess UserRepository = new UserDataAccess();
+        UserBusiness UserBusiness = new UserBusiness();
 
         public IHttpActionResult Get()
         {
-            if(usuario != null)
-            {
-                var usuarios = userRepository.ListUsers();
-                return Ok(usuarios);
-            }
-            return Ok("quase....");
+            var usuarios = UserBusiness.ListUsers();
+            return Ok(usuarios);
+        }
+
+        [HttpPost]
+        [Route("api/user/getUsers")]
+        public IHttpActionResult Get(QueryLimit queryLimit)
+        {
+            //var usuarios = UserBusiness.ListUsers();
+            var usuarios = UserRepository.ListAll(queryLimit, true);
+            return Ok(usuarios);
         }
 
         public IHttpActionResult Get(int id)
         {
-            var usuario = userRepository.GetById(id);
+            var usuario = UserBusiness.GetById(id);
             return Ok(usuario);
         }
 
         [HttpPost]
         public IHttpActionResult Add(User newUser)
         {
-            var user = userRepository.Add(newUser);
+            var user = UserBusiness.Add(newUser);
             return Ok(user);
         }
 
         [HttpPut]
         public IHttpActionResult Update(User user)
         {
-            userRepository.Update(user);
+            UserBusiness.Update(user);
             return Ok(User);
         }
 
-        [HttpDelete]
+        [HttpPost]
+        [Route("api/user/delete")]
         public IHttpActionResult Delete(User user)
         {
-            userRepository.Delete(user);
+            UserBusiness.Delete(user);
             return Ok();
         }
     }

@@ -21,6 +21,7 @@ namespace DataAcccess.Repository
             return Add(newLibrary);
         }
 
+<<<<<<< HEAD
         public void DeleteLibrary(Library library)
         {
             Library Deletedlibrary = GetById(library.Id);
@@ -32,5 +33,7 @@ namespace DataAcccess.Repository
             context.Configuration.ProxyCreationEnabled = false;
             context.Configuration.LazyLoadingEnabled = false;
         }
+=======
+>>>>>>> develop
     }
 }

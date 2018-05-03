@@ -12,20 +12,14 @@ namespace DataAcccess.Repository
     public class UserDataAccess : BaseDataAccess<User>
     {
 
-        public IEnumerable<User> ListUsers()
+        public IEnumerable<User> ListUsers(bool includeNestedProperties = false)
         {
-            return ListAll();
+            return ListAll(includeNestedProperties);
         }
 
         public User AddUser(User newUser)
         {
             return Add(newUser);
-        }
-
-        private void ConfigContext(SGBContext context)
-        {
-            context.Configuration.ProxyCreationEnabled = false;
-            context.Configuration.LazyLoadingEnabled = false;
         }
     }
 }
