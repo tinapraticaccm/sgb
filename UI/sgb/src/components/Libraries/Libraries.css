@@ -1,0 +1,13 @@
+.UsersCard {
+    width: 80%;
+    margin: 5% auto;
+  }
+  
+  .UsersCardTitle {
+    background-color: #01bdd5;
+  }
+  
+  .addUser {
+    text-align: center;
+    margin: 20px;
+  }

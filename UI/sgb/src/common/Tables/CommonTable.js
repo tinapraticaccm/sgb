@@ -67,7 +67,7 @@ class CommonTable extends Component {
             );
         });
 
-        let isActionActive = false;
+        let isActionActive = ( this.props.edit || this.props.delete );
         if( this.props.edit || this.props.delete ) {
             isActionActive = true;
         }

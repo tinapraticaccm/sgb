@@ -39,7 +39,8 @@ namespace SGB.Controllers
         [HttpDelete]
         public IHttpActionResult Delete(Library library)
         {
-
+            if (library == null)
+                return Ok();
             libraryRepository.Delete(library);
             return Ok(library);
         }

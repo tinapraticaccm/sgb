@@ -21,6 +21,12 @@ namespace DataAcccess.Repository
             return Add(newLibrary);
         }
 
+        public void DeleteLibrary(Library library)
+        {
+            Library Deletedlibrary = GetById(library.Id);
+            Delete(Deletedlibrary);
+        }
+
         private void ConfigContext(SGBContext context)
         {
             context.Configuration.ProxyCreationEnabled = false;
