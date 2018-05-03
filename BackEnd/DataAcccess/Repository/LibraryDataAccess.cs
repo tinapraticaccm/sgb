@@ -21,10 +21,5 @@ namespace DataAcccess.Repository
             return Add(newLibrary);
         }
 
-        private void ConfigContext(SGBContext context)
-        {
-            context.Configuration.ProxyCreationEnabled = false;
-            context.Configuration.LazyLoadingEnabled = false;
-        }
     }
 }
