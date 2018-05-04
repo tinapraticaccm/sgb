@@ -31,6 +31,11 @@ class EntryModal extends Component {
                 entryValues[key] = nextProps.defaultValues[key] ;
             } );
         }
+        else {
+            Object.keys(nextProps.textEntry).forEach((key) => {
+                entryValues[key] = '';
+            } );
+        }   
         return {entryValues: entryValues}
         
     }

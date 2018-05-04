@@ -2,7 +2,9 @@ import React, {Component} from 'react';
 import http from '../../httpService/httpService';
 
 import CommonTable from '../../common/Tables/CommonTable';
-import Modal from '../../common/Modal/EntryModal'
+import EntryModal from '../../common/Modal/EntryModal'
+import Dialog from 'material-ui/Dialog'
+import FlatButton from 'material-ui/FlatButton'
 
 
 class Libraries extends Component {
@@ -11,18 +13,34 @@ class Libraries extends Component {
     libraries: null,
     library: null,
     isModalOpen: false,
-    modalAction: null
+    modalAction: null,
+    isDeleteConfirmDialogOpen:false,
+    dialogAction:null,
+    page: 1,
+    queryLimit: {
+      page: 1,
+      limit: 5,
+      Order: 'Id',
+      Orientation: 'DESC',
+    },
+    totalLibraries: 0
   }
 
   componentDidMount = () =>  {
-    this.refreshTable();
+    this.getData();
   }
 
-  refreshTable = () => {
-    http.get('library')
+  getData = () => {
+    http.post('library/getLibraries',this.state.queryLimit)
     .then(response => {
-      this.setState({libraries: response.data})
+      this.setState({libraries: response.data.Result,totalLibraries: response.data.Count})
     });
+  }
+
+  changePage = (newPage) => {
+    let queryLimit = {...this.state.queryLimit}
+    queryLimit.page = newPage
+    this.setState({queryLimit: queryLimit}, () => this.getData())
   }
 
   openModal = () => {
@@ -55,7 +73,7 @@ class Libraries extends Component {
     http.put('library', library)
       .then(response => {
         this.closeModal()
-        this.refreshTable()
+        this.getData()
       })
       .catch(error => this.closeModal())
   }
@@ -68,23 +86,23 @@ class Libraries extends Component {
     })
   }
 
-  modalAddConfirmHandler = (library) => {
-    console.log(library)
+  addLibrary = (library) => {
     http.post('library',library)
       .then( response => {
         this.closeModal()
-        this.refreshTable()
+        this.getData()
       })
       .catch(error => {
         console.log(error)
       })
   }
 
-  deleteClickedHandler = (library) => {
-    console.log(library)
-    http.delete('library/',library)
-      .then(
-        this.refreshTable()
+  deleteLibrary = (library) => {
+    http.post('library/delete',library)
+      .then( response => {
+        this.getData()
+        this.closeDeleteConfirmDialog()
+      }
       )
       .catch(error =>
         console.log(error)
@@ -92,8 +110,33 @@ class Libraries extends Component {
   }
 
   deleteMultiple = (selectedlibraries) => {
-    console.log(selectedlibraries);
+    selectedlibraries.forEach(library => {
+      this.deleteLibrary(library);
+    }); 
   }
+
+  closeDeleteConfirmDialog = () => {
+    this.setState({
+        isDeleteConfirmDialogOpen:false,
+        dialogAction:null,
+    })
+}
+
+deleteClickedHandler = (library) => {
+    const deleteFunction = () =>  this.deleteLibrary(library);
+    this.setState({
+        isDeleteConfirmDialogOpen:true,
+        dialogAction: deleteFunction,
+    })
+}
+
+deleteMultipleClickedHandler = (libraries) => {
+    const deleteMultipleFunction = () => this.deleteMultiple(libraries);
+    this.setState({
+        isDeleteConfirmDialogOpen:true,
+        dialogAction:deleteMultipleFunction,
+    })
+}
   
   render () {
 
@@ -105,33 +148,51 @@ class Libraries extends Component {
     }
     else{
       modalTitle = "Adicionar Biblioteca"
-      modalConfirmAction = this.modalAddConfirmHandler
+      modalConfirmAction = this.addLibrary
     }
 
     let table = null;
 
     if (this.state.libraries) {
       table = <CommonTable 
-            title="Bibliotecas"
-            entryName="Bibliteca"
-            entryNamePlural="Bibliotecas" 
+              naming ={{ 
+              title:"Bibliotecas",
+              entryName:"Bibliteca",
+              entryNamePlural:"Bibliotecas"
+            }} 
             data={this.state.libraries}
             headers={{
-              Location: 'Localização',
               Name: 'Nome',
+              Location: 'Localização',
               Description: 'Descrição',
             }}
             delete={this.deleteClickedHandler}
             edit={this.editClickedHander}
             add={this.addClickedHandler}
-            deleteMultiple={this.deleteMultiple}
+            deleteMultiple={this.deleteMultipleClickedHandler}
+            totalResults={this.state.totalLibraries}
+            page={this.state.queryLimit.page}
+            changePage={this.changePage}
             />
     }
+
+    const dialogActions = [
+      <FlatButton
+        label="Cancelar"
+        primary={true}
+        onClick={() => this.closeDeleteConfirmDialog()}
+      />,
+      <FlatButton
+        label="Confirmar"
+        primary={true}
+        onClick={() => this.state.dialogAction()}
+      />]
+
 
     return (
       <div>
         {table}
-        <Modal
+        <EntryModal
           textEntry={{
             Name: 'Nome',
             Location: 'Localização',
@@ -142,6 +203,13 @@ class Libraries extends Component {
           open={this.state.isModalOpen}
           cancelAction={this.closeModal}
           title={modalTitle}
+        />
+        <Dialog
+          title="Confirmar exclusão?"
+          actions={dialogActions}
+          modal={false}
+          open={this.state.isDeleteConfirmDialogOpen}
+          onRequestClose={this.handleClose}
         />
       </div>
     )

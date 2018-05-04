@@ -1,5 +1,7 @@
-﻿using DataAcccess.Repository;
+﻿using Business.Entities;
+using DataAcccess.Repository;
 using Model.Entities;
+using Model.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,6 +14,7 @@ namespace SGB.Controllers
     public class LibraryController : ApiController
     {
         LibraryDataAccess libraryRepository = new LibraryDataAccess();
+        LibraryBusiness libraryBusiness = new LibraryBusiness();
         
         public IHttpActionResult Get()
         {
@@ -24,25 +27,32 @@ namespace SGB.Controllers
         }
 
         [HttpPost]
+        [Route("api/library/getLibraries")]
+        public IHttpActionResult Get(QueryLimit queryLimit)
+        {
+            var libraries = libraryRepository.ListAll(queryLimit, true);
+            return Ok(libraries);
+        }
+
+        [HttpPost]
         public IHttpActionResult Add(Library newLibrary)
         {
-            return Ok(libraryRepository.AddLibrary(newLibrary) );
+            return Ok(libraryBusiness.Add(newLibrary) );
         }
 
         [HttpPut]
         public IHttpActionResult Update(Library library)
         {
-            libraryRepository.Update(library);
+            libraryBusiness.Update(library);
             return Ok(library);
         }
 
-        [HttpDelete]
+        [HttpPost]
+        [Route("api/library/delete")]
         public IHttpActionResult Delete(Library library)
         {
-            if (library == null)
-                return Ok();
-            libraryRepository.Delete(library);
-            return Ok(library);
+            libraryBusiness.Delete(library);
+            return Ok();
         }
     }
 }

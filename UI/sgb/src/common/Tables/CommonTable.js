@@ -5,6 +5,7 @@ import {
     TableHeaderColumn,
     TableRow,
     TableRowColumn,
+    TableFooter,
 } from 'material-ui/Table';
 import IconButton from 'material-ui/IconButton';
 import EditButton from 'material-ui/svg-icons/content/create';
@@ -13,6 +14,8 @@ import {orange500, grey900, red600} from 'material-ui/styles/colors';
 import Divider from 'material-ui/Divider';
 import RaisedButton from 'material-ui/RaisedButton';
 import {Card, CardTitle} from 'material-ui/Card';
+import Pagination from '../Pagination/Pagination'
+import Aux from '../Auxiliar/Auxiliar'
 
 import React ,{Component}from 'react';
 import classes from './CommonTable.css'
@@ -59,6 +62,7 @@ class CommonTable extends Component {
 
 
     }
+
     render () {
         const tableHeader = Object.keys(this.props.headers)
         .map( header => {
@@ -113,7 +117,7 @@ class CommonTable extends Component {
             <div className={classes.Buttons}>
                     {this.props.add ? (
                         <RaisedButton 
-                            label={'Adicionar ' + this.props.entryName}
+                            label={'Adicionar ' + this.props.naming.entryName}
                             primary={true} 
                             onClick={() => this.props.add()} 
                         />
@@ -121,7 +125,7 @@ class CommonTable extends Component {
                     <div style={{width: '5px',height: 'auto', display: 'inline-block' }} ></div>
                     {this.props.deleteMultiple ?(
                         <RaisedButton 
-                            label={'Apagar ' + this.props.entryNamePlural} 
+                            label={'Apagar ' + this.props.naming.entryNamePlural} 
                             primary={true} 
                             onClick={() => this.props.deleteMultiple(this.state.selectedEntries)} 
                         />
@@ -130,27 +134,37 @@ class CommonTable extends Component {
         ) : null;
 
         return (
-            <Card className={classes.UsersCard}>
-                <CardTitle 
-                    title={this.props.title} 
-                    className={classes.UsersCardTitle} 
-                    titleStyle={{color: 'white'}}
-                />
-                {buttons}
-                <Divider />
-                <Table onRowSelection={(row) => this.rowSelectedHander(row)} multiSelectable	 >
-                    <TableHeader>
-                        <TableRow>
-                            {tableHeader}
-                            {isActionActive ? <TableRowColumn>Ações</TableRowColumn> : null}
-                        </TableRow>
-                    </TableHeader>
-                    <TableBody deselectOnClickaway={false}>
-                        {tableRows}
-                    </TableBody>         
-                </Table>
-            
-            </Card>
+            <Aux>
+                <Card className={classes.UsersCard}>
+                    <CardTitle 
+                        title={this.props.naming.title} 
+                        className={classes.UsersCardTitle} 
+                        titleStyle={{color: 'white'}}
+                    />
+                    {buttons}
+                    <Divider />
+                    <Table onRowSelection={(row) => this.rowSelectedHander(row)} multiSelectable	 >
+                        <TableHeader>
+                            <TableRow>
+                                {tableHeader}
+                                {isActionActive ? <TableRowColumn>Ações</TableRowColumn> : null}
+                            </TableRow>
+                        </TableHeader>
+                        <TableBody deselectOnClickaway={false}>
+                            {tableRows}
+                        </TableBody> 
+                        <TableFooter>
+                            <Pagination 
+                                totalResults={this.props.totalResults} 
+                                page={this.props.page}
+                                changePage={(page) => this.props.changePage(page)}
+                                minPageShowed="1" />
+                        </TableFooter>        
+                    </Table>
+                
+                </Card>
+
+            </Aux>
         )
     }
 
