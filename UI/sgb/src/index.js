@@ -11,14 +11,14 @@ import {BrowserRouter} from 'react-router-dom'
 
 const store = createStore(reducer);
 
-const AppMaterial = () => (
-  <Provider store={store}>
-    <MuiThemeProvider>
-      <BrowserRouter>    
-        <App />
-      </BrowserRouter>    
-    </MuiThemeProvider>
-  </Provider>
+const AppMaterial = () => (  
+    <Provider store={store}>
+      <MuiThemeProvider>
+        <BrowserRouter>    
+          <App/>
+        </BrowserRouter>    
+      </MuiThemeProvider>
+    </Provider>
 );
 
 ReactDOM.render(<AppMaterial />, document.getElementById('root'));

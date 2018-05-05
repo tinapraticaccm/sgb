@@ -14,6 +14,7 @@ import RaisedButton from 'material-ui/RaisedButton';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
 import Pagination from '../../common/Pagination/Pagination'
+import Spinner from '../../common/Spinner/Spinner'
 
 class Users extends Component {
 
@@ -30,7 +31,8 @@ class Users extends Component {
       Order: 'Id',
       Orientation: 'DESC'
     },
-    totalUsers: 0
+    totalUsers: 0,
+    loading: true
   }
 
   componentDidMount () {
@@ -38,11 +40,15 @@ class Users extends Component {
   }
 
   getUsers () {
+    this.setState({loading: true})
     http.post('user/getUsers', this.state.queryLimit)
-    .then(response => {
-      this.setState({totalUsers: response.data.Count})
-      this.setState({users: response.data.Result})
-    })
+      .then(response => {
+        this.setState({
+          totalUsers: response.data.Count,
+          users: response.data.Result,
+          loading: false
+        })
+      })
   }
   refreshTable () {
     http.get('user')
@@ -123,8 +129,8 @@ class Users extends Component {
       />,
     ];
 
-    let table = null
-    if (this.state.users) {
+    let table = <Spinner />
+    if (this.state.users && !this.state.loading) {
       table = this.state.users.map(user => {
         return (
           <TableRow key={user.Id}>
@@ -145,7 +151,7 @@ class Users extends Component {
         )
       })
     }
-
+      
     return (
       <div>
         <Card className={classes.UsersCard}>
