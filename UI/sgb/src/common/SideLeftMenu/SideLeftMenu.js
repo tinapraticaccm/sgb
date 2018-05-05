@@ -30,9 +30,15 @@ class SideLeftMenu extends Component {
           open={this.state.openSideLeftMenu}
           onRequestChange={(open) => this.setState({openSideLeftMenu: open})}
         >
-          <MenuItem onClick={this.closeMenu}><Link to="/usuarios">Usuários</Link></MenuItem>
-          <Link to="/bibliotecas"><MenuItem onClick={this.closeMenu}>Bibliotecas</MenuItem></Link>
-          <MenuItem onClick={this.closeMenu}>Menu Item 2</MenuItem>
+          <Link to="/">
+            <MenuItem onClick={this.closeMenu} className={classes.link}>Home</MenuItem>
+          </Link>
+          <Link to="/usuarios">  
+            <MenuItem onClick={this.closeMenu}>Usuários</MenuItem>
+          </Link>
+          <Link to="/bibliotecas">
+            <MenuItem onClick={this.closeMenu}>Bibliotecas</MenuItem>
+            </Link>
         </Drawer>
       </div>
     );
