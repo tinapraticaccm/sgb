@@ -151,30 +151,28 @@ deleteMultipleClickedHandler = (libraries) => {
       modalConfirmAction = this.addLibrary
     }
 
-    let table = null;
-
-    if (this.state.libraries) {
-      table = <CommonTable 
-              naming ={{ 
-              title:"Bibliotecas",
-              entryName:"Bibliteca",
-              entryNamePlural:"Bibliotecas"
-            }} 
-            data={this.state.libraries}
-            headers={{
-              Name: 'Nome',
-              Location: 'Localização',
-              Description: 'Descrição',
-            }}
-            delete={this.deleteClickedHandler}
-            edit={this.editClickedHander}
-            add={this.addClickedHandler}
-            deleteMultiple={this.deleteMultipleClickedHandler}
-            totalResults={this.state.totalLibraries}
-            page={this.state.queryLimit.page}
-            changePage={this.changePage}
-            />
-    }
+    const table = (
+      <CommonTable 
+        naming ={{ 
+          title:"Bibliotecas",
+          entryName:"Bibliteca",
+          entryNamePlural:"Bibliotecas"
+        }} 
+        data={this.state.libraries}
+        headers={{
+          Name: 'Nome',
+          Location: 'Localização',
+          Description: 'Descrição',
+        }}
+        delete={this.deleteClickedHandler}
+        edit={this.editClickedHander}
+        add={this.addClickedHandler}
+        deleteMultiple={this.deleteMultipleClickedHandler}
+        totalResults={this.state.totalLibraries}
+        page={this.state.queryLimit.page}
+        changePage={this.changePage}
+      />
+    );
 
     const dialogActions = [
       <FlatButton

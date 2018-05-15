@@ -16,6 +16,7 @@ import RaisedButton from 'material-ui/RaisedButton';
 import {Card, CardTitle} from 'material-ui/Card';
 import Pagination from '../Pagination/Pagination'
 import Aux from '../Auxiliar/Auxiliar'
+import Spinner from '../Spinner/Spinner'
 
 import React ,{Component}from 'react';
 import classes from './CommonTable.css'
@@ -23,11 +24,17 @@ import classes from './CommonTable.css'
 class CommonTable extends Component {
     constructor(props) {
         super(props);
-        const isRowSelected = props.data.map(() => false);
+        const isRowSelected = props.data? props.data.map(() => false) : null;
         this.state ={
             selectedEntries: [],
             isRowSelected: isRowSelected,
         }
+    }
+    static getDerivedStateFromProps(nextProps, prevState) {
+        const isRowSelected = nextProps.data? nextProps.data.map(() => false) : null;
+        const nextState = {...prevState};
+        nextState.isRowSelected = isRowSelected;
+        return nextState;
     }
     
     rowSelectedHander = (rows) => {
@@ -67,7 +74,10 @@ class CommonTable extends Component {
         const tableHeader = Object.keys(this.props.headers)
         .map( header => {
             return (
-                <TableHeaderColumn key={header} >{this.props.headers[header] }</TableHeaderColumn>
+                <TableHeaderColumn 
+                    key={header}>
+                    {this.props.headers[header] }
+                </TableHeaderColumn>
             );
         });
 
@@ -76,41 +86,47 @@ class CommonTable extends Component {
             isActionActive = true;
         }
 
-
-        const tableRows= this.props.data.map( (entry,index) => {
-
-            const singleRow = Object.keys(this.props.headers).map(header =>(
-                <TableRowColumn key={header + entry['Id']} >{entry[header] }</TableRowColumn>
-            ) );
-            
-            const editAction = this.props.edit ? (
-                    <IconButton tooltip="SVG Icon" onClick={() => this.props.edit(entry)}>
-                            <EditButton color={orange500} />
-                    </IconButton>
-            ) : null;
-
-            const deleteAction = this.props.delete ? (
-                    <IconButton tooltip="SVG Icon" onClick={() => this.props.delete(entry)}>
-                            <DeleteButton color={grey900} hoverColor={red600} />
-                    </IconButton>
-            ) : null;
-
-            const actions = isActionActive ? (
-                <TableRowColumn>
-                    {editAction}
-                    {deleteAction}
-                </TableRowColumn>
-            ) : null;
-
-
-            return (
-                <TableRow key={entry['Id']} selected={this.state.isRowSelected[index] } >
-                    {singleRow}
-                    {actions}
-                </TableRow>
-            );
-            
-        });
+        let tableRows = <Spinner />
+        if(this.props.data) {
+            tableRows= this.props.data.map( (entry,index) => {
+    
+                const singleRow = Object.keys(this.props.headers)
+                .map(header =>(
+                    <TableRowColumn 
+                        key={header + entry['Id']} >
+                        {entry[header] }
+                    </TableRowColumn>
+                ) );
+                
+                const editAction = this.props.edit ? (
+                        <IconButton tooltip="SVG Icon" onClick={() => this.props.edit(entry)}>
+                                <EditButton color={orange500} />
+                        </IconButton>
+                ) : null;
+    
+                const deleteAction = this.props.delete ? (
+                        <IconButton tooltip="SVG Icon" onClick={() => this.props.delete(entry)}>
+                                <DeleteButton color={grey900} hoverColor={red600} />
+                        </IconButton>
+                ) : null;
+    
+                const actions = isActionActive ? (
+                    <TableRowColumn>
+                        {editAction}
+                        {deleteAction}
+                    </TableRowColumn>
+                ) : null;
+    
+    
+                return (
+                    <TableRow key={entry['Id']} selected={this.state.isRowSelected[index] } >
+                        {singleRow}
+                        {actions}
+                    </TableRow>
+                );
+                
+            });
+        }
 
 
         const buttons = ( this.props.add || this.props.deleteMultiple) ? (

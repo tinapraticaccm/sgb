@@ -38,7 +38,7 @@ class SideLeftMenu extends Component {
           </Link>
           <Link to="/bibliotecas">
             <MenuItem onClick={this.closeMenu}>Bibliotecas</MenuItem>
-            </Link>
+          </Link>
         </Drawer>
       </div>
     );

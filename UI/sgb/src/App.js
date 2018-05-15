@@ -15,8 +15,8 @@ class App extends Component {
         <SideLeftMenu />
 
         <div className="container">
-          <div class="row">
-            <div class="col">
+          <div className="row">
+            <div className="col">
               <Card>
                 <CardTitle>
                   Configurações  
@@ -26,12 +26,12 @@ class App extends Component {
                 </CardText>
               </Card>
             </div>
-            <div class="col">
+            <div className="col">
               <Card>
                 <CardTitle>Controle de Estoque</CardTitle>
               </Card>
             </div>
-            <div class="col">
+            <div className="col">
               <Card>
                 <CardTitle>Análise Preditiva</CardTitle>
               </Card>
