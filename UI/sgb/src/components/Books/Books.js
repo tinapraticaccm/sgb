@@ -1,23 +1,22 @@
 import React, { Component } from 'react';
 import { Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn, TableFooter } from 'material-ui/Table';
-import { Card, CardTitle, CardHeader, CardText } from 'material-ui/Card';
-import http from '../../httpService/httpService'
+import { Card, CardTitle } from 'material-ui/Card';
 import classes from './Books.css'
 import IconButton from 'material-ui/IconButton';
 import EditButton from 'material-ui/svg-icons/content/create';
 import DeleteButton from 'material-ui/svg-icons/action/delete';
 import BookModal from './BookModal/BookModal'
-import { orange500, red500 } from 'material-ui/styles/colors';
+import {orange500, red500} from 'material-ui/styles/colors';
 import Divider from 'material-ui/Divider';
 import RaisedButton from 'material-ui/RaisedButton';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
-import Pagination from '../../common/Pagination/Pagination'
+import axios from 'axios';
+import Pagination from '../../common/Pagination/Pagination';
 
 class Books extends Component {
     state = {
-        books: null,
-        book: null,
+        books: [],
         isModalOpen: false,
         openDeleteConfirmDialog: false,
         bookDelete: null,
@@ -32,46 +31,15 @@ class Books extends Component {
     }
 
     componentDidMount() {
-        this.getBooks();
-    }
-
-    getBooks() {
-        http.post('book/getBooks', this.state.queryLimit)
-        .then(response => {
-            this.setState({totalBooks: response.data.Count})
-            this.setState({books: response.data.Result})
-        })
-    }
-
-    refreshTable() {
-        http.get('book')
+        axios.get('https://jsonplaceholder.typicode.com/posts')
             .then(response => {
                 this.setState({books: response.data})
-            })
+            });
     }
 
-    openBookmodal(book) {
-        this.setState({book: book})
-        this.setState({isModalOpen: true})
-    }
-    
-    closeModal() {
-        this.setState({isModalOpen: false})
-    }
+    openBookmodal() {this.setState({isModalOpen: true})}
 
-    editBook(book) {
-        http.put('book', book)
-            .then(response => {
-                this.closeModal()
-                this.refreshTable()
-            })
-            .catch(error => this.closeModal())
-    }
-
-    addBook(book) {
-        this.setState({book: book})
-        this.setState({isModalOpen: true})
-    }
+    closeModal() {this.setState({isModalOpen: false})}
 
     openDeleteConfirmDialog(book) {
         this.setState({bookDelete: {...book}})
@@ -81,15 +49,6 @@ class Books extends Component {
     closeDeleteConfirmDialog() {
         this.setState({bookDelete: null})
         this.setState({openDeleteConfirmDialog: false})
-    }
-
-    deleteBook() {
-        http.post('book/delete', this.state.bookDelete)
-            .then(response => {
-                this.closeDeleteConfirmDialog()
-                this.refreshTable()
-            })
-            .catch(error => this.closeDeleteConfirmDialog())
     }
 
     changePage(newPage) {
@@ -102,10 +61,7 @@ class Books extends Component {
         const modal = this.state.isModalOpen ?
         (
             <BookModal
-                book={{...this.state.book}}
-                open={this.state.isModalOpen}
-                closeModal={() => this.closeModal()}
-                editBook={(book) => this.editBook(book)} >
+                closeModal={() => this.closeModal()} >
             </BookModal>
         ) : null
 
@@ -113,28 +69,32 @@ class Books extends Component {
             <FlatButton
                 label="Cancelar"
                 primary={true}
-                onClick={() => this.closeDeleteConfirmDialog()}/>,
+                onClick={() => this.closeDeleteConfirmDialog()} >
+            </FlatButton>,
+
             <FlatButton
-                label="Confirmar"
+                label="Salvar"
                 primary={true}
-                onClick={() => this.deleteBook()} />
+                onClick={() => this.addBook()} >
+            </FlatButton>
         ];
 
         let table = null;
         if (this.state.books) {
             table = this.state.books.map(book => {
                 return (
-                    <TableRow key={book.Id}>
-                        <TableRowColumn>{book.Titulo}</TableRowColumn>
-                        <TableRowColumn>{book.Autor}</TableRowColumn>
-                        <TableRowColumn>{book.Editora}</TableRowColumn>
+                    <TableRow key={book.id}>
+                        <TableRowColumn>{book.title}</TableRowColumn>
+                        <TableRowColumn>{book.body}</TableRowColumn>
                         <TableRowColumn>
                             <IconButton tooltip="SVG Icon" onClick={() => this.openBookModal(book)}>
                                 <EditButton color={orange500} />
                             </IconButton>
+
                             <IconButton tooltip="SVG Icon" onClick={() => this.openDeleteConfirmDialog(book)}>
                                 <DeleteButton color={red500} />
                             </IconButton>
+
                         </TableRowColumn>
                     </TableRow>
                 )
@@ -154,7 +114,6 @@ class Books extends Component {
                             <TableRow>
                                 <TableHeaderColumn>Título</TableHeaderColumn>
                                 <TableHeaderColumn>Autor</TableHeaderColumn>
-                                <TableHeaderColumn>Editora</TableHeaderColumn>
                             </TableRow>
                         </TableHeader>
                         <TableBody>
