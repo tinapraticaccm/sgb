@@ -17,6 +17,7 @@ import Pagination from '../../common/Pagination/Pagination';
 class Books extends Component {
     state = {
         books: [],
+        book: null,
         isModalOpen: false,
         openDeleteConfirmDialog: false,
         bookDelete: null,

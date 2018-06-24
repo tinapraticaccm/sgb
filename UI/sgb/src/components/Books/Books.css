@@ -1,0 +1,22 @@
+.BooksCard {
+    width: 80%;
+    margin: 5% auto;
+  }
+  
+  .BooksCardTitle {
+    background-color: #01bdd5;
+  }
+  
+  .addBook {
+    text-align: center;
+    margin: 20px;
+  }
+  
+  .Pagination {
+    display: block;
+  }
+  
+  .InlineList {
+    display: flex;
+    list-style: none;
+  }

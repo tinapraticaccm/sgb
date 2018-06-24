@@ -8,9 +8,10 @@ class BookModal extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            Id: '',
-            Titulo: '',
-            Autor: ''
+            Id: props.book ? props.book.Id: '',
+            Titulo: props.book ? props.book.Titulo: '',
+            Autor: props.book ? props.book.Autor: '',
+            Editora: props.book? props.book.Editora: ''
         }
     }
 
