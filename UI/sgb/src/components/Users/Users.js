@@ -38,10 +38,10 @@ class Users extends Component {
   }
 
   getUsers () {
-    http.post('user/getUsers', this.state.queryLimit)
+    http.get('user', this.state.queryLimit)
     .then(response => {
       this.setState({totalUsers: response.data.Count})
-      this.setState({users: response.data.Result})
+      this.setState({users: response.data})
     })
   }
   refreshTable () {
@@ -69,7 +69,7 @@ class Users extends Component {
       .catch(error => this.closeModal())
   }
 
-  addUser () {
+  addUser() {
     this.setState({user: null})
     this.setState({isModalOpen: true})
   }

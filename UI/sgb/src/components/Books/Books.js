@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import { Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn, TableFooter } from 'material-ui/Table';
-import { Card, CardTitle } from 'material-ui/Card';
-import classes from './Books.css'
+import { Table, TableBody, TableHeader, TablePagination, TableHeaderColumn, TableRow, TableRowColumn} from 'material-ui/Table';
+import { CardTitle } from 'material-ui/Card';
+import classes from './Books.css';
 import IconButton from 'material-ui/IconButton';
 import EditButton from 'material-ui/svg-icons/content/create';
 import DeleteButton from 'material-ui/svg-icons/action/delete';
@@ -12,11 +12,11 @@ import RaisedButton from 'material-ui/RaisedButton';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
 import axios from 'axios';
-import Pagination from '../../common/Pagination/Pagination';
+import { Paper } from 'material-ui';
 
 class Books extends Component {
     state = {
-        books: [],
+        books: null,
         book: null,
         isModalOpen: false,
         openDeleteConfirmDialog: false,
@@ -32,15 +32,29 @@ class Books extends Component {
     }
 
     componentDidMount() {
-        axios.get('https://jsonplaceholder.typicode.com/posts')
-            .then(response => {
-                this.setState({books: response.data})
-            });
+        this.getBooks();
     }
 
-    openBookmodal() {this.setState({isModalOpen: true})}
+    getBooks() {
+        axios.get('http://localhost:54512/api/book', this.state.queryLimit).then(response => {
+            this.setState({books: response.data})
+            const totalBooks = this.state.books.length
+            this.setState({totalBooks: totalBooks})
+        });
+    }
 
-    closeModal() {this.setState({isModalOpen: false})}
+    refreshTable() {
+        this.getBooks()
+    }
+
+    openBookmodal(book) {
+        this.setState({book: book})
+        this.setState({isModalOpen: true})
+    }
+
+    closeModal() {
+        this.setState({isModalOpen: false})
+    }
 
     openDeleteConfirmDialog(book) {
         this.setState({bookDelete: {...book}})
@@ -58,11 +72,34 @@ class Books extends Component {
         this.setState({queryLimit: queryLimit}, () => this.getBooks)
     }
 
+    addBook() {
+        this.setState({book: null})
+        this.setState({isModalOpen: true})
+    }
+
+    editBook(book) {
+        axios.put('http://localhost:54512/api/book', book).then(response => {
+            this.closeModal()
+            this.refreshTable()
+        }).catch(error => this.closeModal())
+    }
+
+    deleteBook () {
+        console.log(this.state.bookDelete)
+        axios.delete('http://localhost:54512/api/book', this.state.bookDelete).then(response => {
+            this.closeDeleteConfirmDialog()
+            this.refreshTable()
+        }).catch(error => this.closeDeleteConfirmDialog())
+    }
+
     render() {
         const modal = this.state.isModalOpen ?
         (
             <BookModal
-                closeModal={() => this.closeModal()} >
+                book={{...this.state.book}}
+                open={this.state.isModalOpen}
+                closeModal={() => this.closeModal()}
+                editBook={(book) => this.editBook(book)}>
             </BookModal>
         ) : null
 
@@ -74,25 +111,28 @@ class Books extends Component {
             </FlatButton>,
 
             <FlatButton
-                label="Salvar"
+                label="Sim"
                 primary={true}
-                onClick={() => this.addBook()} >
+                onClick={() => this.deleteBook()} >
             </FlatButton>
-        ];
+        ]
+
 
         let table = null;
         if (this.state.books) {
             table = this.state.books.map(book => {
                 return (
-                    <TableRow key={book.id}>
-                        <TableRowColumn>{book.title}</TableRowColumn>
-                        <TableRowColumn>{book.body}</TableRowColumn>
+                    <TableRow key={book.Id}>
+                        <TableRowColumn>{book.Titulo}</TableRowColumn>
+                        <TableRowColumn>{book.Autor}</TableRowColumn>
+                        <TableRowColumn>{book.Editora}</TableRowColumn>
+                        <TableRowColumn>{book.Edicao}</TableRowColumn>
                         <TableRowColumn>
-                            <IconButton tooltip="SVG Icon" onClick={() => this.openBookModal(book)}>
+                            <IconButton tooltip="SVG Icon" onClick={() => {this.setState({book: book}); this.setState({isModalOpen: true})}}>
                                 <EditButton color={orange500} />
                             </IconButton>
 
-                            <IconButton tooltip="SVG Icon" onClick={() => this.openDeleteConfirmDialog(book)}>
+                            <IconButton tooltip="SVG Icon" onClick={() => {this.setState({bookDelete: book}); this.setState({openDeleteConfirmDialog: true})}}>
                                 <DeleteButton color={red500} />
                             </IconButton>
 
@@ -101,10 +141,9 @@ class Books extends Component {
                 )
             })
         }
-
         return (
             <div>
-                <Card className={classes.BooksCard}>
+                <Paper className={classes.BooksPaper}>
                     <CardTitle title="Livros" className={classes.BooksCardTitle} titleStyle={{color: 'white'}} />
                     <div className={classes.addBook}>
                         <RaisedButton label="Adicionar livro" primary={true} onClick={() => this.addBook()} />
@@ -115,24 +154,16 @@ class Books extends Component {
                             <TableRow>
                                 <TableHeaderColumn>Título</TableHeaderColumn>
                                 <TableHeaderColumn>Autor</TableHeaderColumn>
+                                <TableHeaderColumn>Editora</TableHeaderColumn>
+                                <TableHeaderColumn>Edição</TableHeaderColumn>
                             </TableRow>
                         </TableHeader>
                         <TableBody>
                             {table}
                         </TableBody>
-                        <TableFooter>
-                            <Pagination
-                                totalResults={this.state.totalBooks}
-                                page={this.state.queryLimit.page}
-                                changePage={(page) => this.changePage(page)}
-                                minPageShowed="1" >
-                            </Pagination>
-                        </TableFooter>
                     </Table>
-                </Card>
-
+                </Paper>
                 {modal}
-
                 <Dialog
                     title="Confirmar exclusão?"
                     actions={dialogActions}

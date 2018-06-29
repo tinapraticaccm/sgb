@@ -1,19 +1,17 @@
-.BooksCard {
+  .BooksPaper {
     width: 80%;
+    text-align: center;
     margin: 5% auto;
   }
   
   .BooksCardTitle {
     background-color: #01bdd5;
+    text-align: center;
   }
   
   .addBook {
     text-align: center;
     margin: 20px;
-  }
-  
-  .Pagination {
-    display: block;
   }
   
   .InlineList {

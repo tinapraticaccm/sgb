@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const http = axios.create({
-    baseURL: 'https://sgbccm-3c418.firebaseio.com/'
+    baseURL: 'https://localhost:54512/api/'
 });
 
 export default http;

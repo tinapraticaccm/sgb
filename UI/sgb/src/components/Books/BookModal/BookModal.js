@@ -2,7 +2,6 @@ import React, {Component} from 'react';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
 import TextField from 'material-ui/TextField';
-import axios from 'axios';
 
 class BookModal extends Component {
     constructor(props) {
@@ -11,18 +10,20 @@ class BookModal extends Component {
             Id: props.book ? props.book.Id: '',
             Titulo: props.book ? props.book.Titulo: '',
             Autor: props.book ? props.book.Autor: '',
-            Editora: props.book? props.book.Editora: ''
+            Editora: props.book? props.book.Editora: '',
+            Edicao: props.book? props.book.Edicao: 0
         }
     }
 
     render() {
-        const addBook = () => {
-            const data = {
-                id: this.state.id,
-                title: this.state.Titulo,
-                body: this.state.Autor
-            }
-            axios.post('https://jsonplaceholder.typicode.com/posts', data);
+        const editBook = () => {
+            this.props.editBook({
+                Id: this.state.Id,
+                Titulo: this.state.Titulo,
+                Autor: this.state.Autor,
+                Editora: this.state.Editora,
+                Edicao: this.state.Edicao
+            })
         }
 
         const actions = [
@@ -35,13 +36,15 @@ class BookModal extends Component {
             <FlatButton
                 label="Salvar"
                 primary={true}
-                onClick={() => this.addBook()} >
+                onClick={() => editBook()} >
             </FlatButton>
         ]
 
+        var dialogTitle = this.props.book ? "Adicionar livro" : "Editar livro"
+
         return (
             <Dialog
-                title="Adicionar livro"
+                title={dialogTitle}
                 modal={false}
                 actions={actions}
                 open={this.props.open}
@@ -61,6 +64,22 @@ class BookModal extends Component {
                         floatingLabelText="Autor"
                         value={this.state.Autor}
                         onChange={(event) => this.setState({Autor: event.target.value})}
+                        fullWidth={true} >
+                    </TextField>
+
+                    <TextField
+                        id="text-field-default"
+                        floatingLabelText="Editora"
+                        value={this.state.Editora}
+                        onChange={(event) => this.setState({Editora: event.target.value})}
+                        fullWidth={true} >
+                    </TextField>
+
+                    <TextField
+                        id="text-field-default"
+                        floatingLabelText="Edição"
+                        value={this.state.Edicao}
+                        onChange={(event) => this.setState({Edicao: event.target.value})}
                         fullWidth={true} >
                     </TextField>
                 </div>
